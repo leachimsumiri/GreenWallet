@@ -1,6 +1,16 @@
-# greenwallet
+# GreenWallet
 
-## Project setup
+## API / Server Setup
+
+### Install Flask (REST API)
+```
+pip install flask
+```
+
+### Install Banking API
+https://github.com/OpenBankProject/Hello-OBP-DirectLogin-Python
+
+## App / Client Setup
 ```
 npm install
 ```
