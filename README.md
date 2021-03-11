@@ -5,6 +5,7 @@
 ### Install Flask (REST API)
 ```
 pip install flask
+pip install flask-cors
 ```
 
 ### Install Banking API
