@@ -9,15 +9,108 @@
         </div>
       </div>
     </div>
-
-    <canvas class="my-4 w-100" id="myChart" width="900" height="300"></canvas>
-
+    <div class="container">
+      <canvas class="my-4 w-100" id="myChart" width="400" height="100"></canvas>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">green index</th>
+              <th scope="col">target name</th>
+              <th scope="col">IBAN</th>
+              <th scope="col">amoun</th>
+              <th scope="col">purpose</th>
+              <th scope="col">valid date</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr v-for="transaction in transactions" :key="transaction.greenIndex">
+                <th scope="row">{{transaction.greenIndex}}</th>
+                <td>{{transaction.targetName}}</td>
+                <td>{{transaction.IBAN}}</td>
+                <td>{{transaction.amount}}</td>
+                <td>{{transaction.purpose}}</td>
+                <td>{{transaction.buchungsdatum}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
   </main>
 </template>
 
 <script>
+import * as axios from 'axios';
+import Chart from 'chart.js';
+
+
+const gettransactions = async function(){
+  //const response = await axios.get('http://127.0.0.1:5000/getGreenTransactions/');
+  const response = await axios.get('api/getGreenTransactions.json');
+  const result = response.data.map(transaction => {
+    return transaction
+  });
+  return result;
+};
+
 export default {
-  name: "GreenDashboard.vue"
+  data() {
+    return {
+      transactions: [],
+      message: '',
+    }
+  },
+  name: "Transactions",
+  async created() {
+    await this.loadData();
+    let ctx = document.getElementById("myChart");
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+        datasets: [{
+          data:[
+            -42,
+            90,
+            -2,
+            35,
+            93,
+            -89,
+            5,
+            8,
+            50,
+            28,
+            12,
+            76
+          ],
+          lineTension: 0,
+          backgroundColor: 'transparent',
+          borderColor: '#27cc00',
+          borderWidth: 4,
+          pointBackgroundColor: '#27cc00'
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        },
+        legend: {
+          display: false
+        }
+      }
+    });
+
+  },
+  methods: {
+    async loadData(){
+      this.transactions = [];
+      this.message = 'getting transactions, please be patient';
+      this.transactions = await gettransactions();
+      this.message = '';
+    }
+  }
 }
 </script>
 
