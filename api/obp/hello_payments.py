@@ -14,12 +14,12 @@ from props.default import *
 import lib.obp
 obp = lib.obp
 
-obp.setBaseUrl(BASE_URL)
-obp.setApiVersion(API_VERSION)
+obp.setBaseUrl("https://accenture.openbankproject.com/")
+obp.setApiVersion("v3.1.0")
 
+# Login and set authorized token
+obp.login('helmi.fi.29@example.com', '9f5cc8', "5yi2eyaxltkqibfs3ghpojt1u3ay3jngnbzaoeiq")
 
-# login and set authorized token
-obp.login(USERNAME, PASSWORD, CONSUMER_KEY)
 obp.setCounterParty(COUNTERPARTY_BANK, OUR_COUNTERPARTY,OUR_COUNTERPARTY_ID,OUR_COUNTERPARTY_IBAN)
 obp.setPaymentDetails(OUR_CURRENCY, OUR_VALUE_LARGE)
 banks = obp.getBanks()
