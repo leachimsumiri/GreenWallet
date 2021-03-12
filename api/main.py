@@ -16,14 +16,27 @@ greenIndex = {
 
 api = Flask(__name__)
 @api.route('/getGreenTransactions', methods=['GET'])
-# @cross_origin()
+# @cross_origin() # for POST / PUT / etc.
 def get_transactions():
-    response = jsonify(mockTransactions)
+    
+    # Get Banking Data 
+    # TODO: For future Versions should take different/varying accounts!
+    bankData = obpTransactions()
+
+    response = jsonify([{
+        'buchungsDatum': ta['details']['completed'], 
+        } for ta in bankData['transactions']])
+
+    # Temp Test / Mock Response
+    # response = jsonify(bankData)
+    # response = jsonify(mockTransactions)
+
     # Enable Access-Control-Allow-Origin
     response.headers.add("Access-Control-Allow-Origin", "*")
+
     return response
-    # return json.dumps(transactions)
+
 
 if __name__ == '__main__':
-    print(json.dumps(obpTransactions(), indent=4, sort_keys=True))
+    # print(json.dumps(obpTransactions(), indent=2, sort_keys=True))
     api.run()
