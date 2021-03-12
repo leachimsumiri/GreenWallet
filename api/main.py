@@ -1,18 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import re
 from flask import Flask, json, jsonify
-
 from obp.lib import obp
 
 #@Stefan die Transaktionen kannst mal verwenden
 obpTransactions = obp.getPublicTransactions
 mockTransactions = '[{ greenIndex: -42, targetName: "OMV Stinkstraße 32", IBAN:"AT123453453452234", amount: "2 Millionen Euro", purpose: "", buchungsdatum: "heute" }, { greenIndex: "over 9000", targetName: "Green Company: Pflanze zwei Bäume", IBAN: "AT89498239823", amount: "60 cent", purpose: "Ich liebe die Natur!!!", buchungsdatum: "gestern" }]'
 
-greenIndex = {
-    'omv':                      -42,
-    'green company':            9001,
-}
+greenIndexRegex = [
+    ('.*OMV.*',                       -42),
+    ('.*green company.*',            9001),
+    ('.*ALIAS.*',                    -100),
+]
+
+def greenLookup(search, checklist):
+    for pattern, value in checklist:
+        if re.search(pattern, search):
+            return value
+    return None
 
 api = Flask(__name__)
 @api.route('/getGreenTransactions', methods=['GET'])
@@ -24,6 +31,7 @@ def get_transactions():
     bankData = obpTransactions()
 
     greenish = [{
+        'greenIndex':       greenLookup(ta['other_account']['holder']['name'], greenIndexRegex),
         'buchungsDatum':    ta['details']['completed'], 
         'targetName':       ta['other_account']['holder']['name'],
         'IBAN':             ta['other_account']['IBAN'],
