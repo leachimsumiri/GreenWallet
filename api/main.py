@@ -23,11 +23,17 @@ def get_transactions():
     # TODO: For future Versions should take different/varying accounts!
     bankData = obpTransactions()
 
-    response = jsonify([{
-        'buchungsDatum': ta['details']['completed'], 
-        } for ta in bankData['transactions']])
+    greenish = [{
+        'buchungsDatum':    ta['details']['completed'], 
+        'targetName':       ta['other_account']['holder']['name'],
+        'IBAN':             ta['other_account']['IBAN'],
+        'amount':           ta['details']['value']['currency'] + ' ' + ta['details']['value']['amount'],
+        'purpose':          ta['details']['description'],
+        } for ta in bankData['transactions']]
+    response = jsonify(greenish)
 
     # Temp Test / Mock Response
+    print(json.dumps(greenish, indent=2, sort_keys=True))
     # response = jsonify(bankData)
     # response = jsonify(mockTransactions)
 
