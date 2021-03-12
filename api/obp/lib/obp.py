@@ -119,6 +119,11 @@ def getPrivateAccounts(bank):
     response = requests.get(u"{0}/obp/{1}/banks/{2}/accounts/private".format(BASE_URL, API_VERSION, bank), headers=mergeHeaders(DL_TOKEN, CONTENT_JSON))
     return response.json()['accounts']
 
+# Get public transactions
+def getPublicTransactions():
+    response = requests.get("https://apisandbox.openbankproject.com/obp/v1.2.1/banks/rbs/accounts/savings-kids-john/public/transactions")
+    return response.json()
+
 # Get a single account
 def getAccount(bank, account):
     # Prepare headers
@@ -228,8 +233,6 @@ def addEntitlement(entitlement, user, bank=''):
     response = requests.post(u"{0}/obp/{1}/users/{2}/entitlements".format(BASE_URL, API_VERSION, user), json=post_data, headers=mergeHeaders(DL_TOKEN, CONTENT_JSON))
     # Log result
     return response.text
-
-
 
 # Answer Transaction Request Challenge. - V210
 def answerChallengeV210(bank_id,
