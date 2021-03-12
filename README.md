@@ -8,6 +8,11 @@ pip install flask
 pip install flask-cors
 ```
 
+### Install obp python api requirements
+```
+pip install -r api/obp/requirements.txt
+```
+
 ### Install Banking API
 https://github.com/OpenBankProject/Hello-OBP-DirectLogin-Python
 
