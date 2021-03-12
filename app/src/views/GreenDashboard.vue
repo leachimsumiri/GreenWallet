@@ -41,12 +41,18 @@
 import * as axios from 'axios';
 import Chart from 'chart.js';
 
-
-const gettransactions = async function(){
-  //const response = await axios.get('http://127.0.0.1:5000/getGreenTransactions/');
-  const response = await axios.get('api/getGreenTransactions.json');
+const gettransactions = async function(returnobject){
+  const response = await axios.get('http://127.0.0.1:5000/getGreenTransactions');
+  console.log(response);
+  //const response = await axios.get('api/getGreenTransactions.json');
   const result = response.data.map(transaction => {
-    return transaction
+    if (returnobject === "transaction"){
+      return transaction
+    }
+    else {
+      return transaction.greenIndex;
+    }
+
   });
   return result;
 };
@@ -56,6 +62,7 @@ export default {
     return {
       transactions: [],
       message: '',
+      dataset: []
     }
   },
   name: "Transactions",
@@ -67,20 +74,7 @@ export default {
       data: {
         labels: ['January','February','March','April','May','June','July','August','September','October','November','December'],
         datasets: [{
-          data:[
-            -42,
-            90,
-            -2,
-            35,
-            93,
-            -89,
-            5,
-            8,
-            50,
-            28,
-            12,
-            76
-          ],
+          data: this.dataset,
           lineTension: 0,
           backgroundColor: 'transparent',
           borderColor: '#27cc00',
@@ -106,8 +100,10 @@ export default {
   methods: {
     async loadData(){
       this.transactions = [];
+      this.dataset = [];
       this.message = 'getting transactions, please be patient';
-      this.transactions = await gettransactions();
+      this.transactions = await gettransactions("transaction");
+      this.dataset = await gettransactions("dataset");
       this.message = '';
     }
   }
