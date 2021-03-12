@@ -41,7 +41,7 @@ def get_transactions():
     response = jsonify(greenish)
 
     # Temp Test / Mock Response
-    print(json.dumps(greenish, indent=2, sort_keys=True))
+    # print(json.dumps(greenish, indent=2, sort_keys=True))
     # response = jsonify(bankData)
     # response = jsonify(mockTransactions)
 
