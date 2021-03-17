@@ -1,18 +1,26 @@
 [
   {
-    "greenIndex": "-42",
+    "greenIndex": -45.5,
     "targetName": "OMV Stinkstraße 32",
-    "IBAN":"AT123453453452234",
-    "amount": "2 Millionen Euro",
+    "IBAN":"AT22 5123 0982 1233",
+    "amount": 45.5,
     "purpose": "",
-    "buchungsdatum": "heute"
+    "buchungsDatum": "2021-01-05; 14:20:01"
   },
   {
-    "greenIndex": "over 9000",
+    "greenIndex": 50,
     "targetName": "Green Company: Pflanze zwei Bäume",
-    "IBAN": "AT89498239823",
-    "amount": "60 cent",
+    "IBAN": "AT10 2333 7238 1233",
+    "amount": 10,
     "purpose": "Ich liebe die Natur!!!",
-    "buchungsdatum": "gestern"
+    "buchungsDatum": "2021-02-01; 08:28:38"
+  },
+  {
+    "greenIndex": 10,
+    "targetName": "Wolfgang Radinger-Peer",
+    "IBAN":"AT00 0000 0000 0000",
+    "amount": 5000,
+    "purpose": "Hackathon Bestechungsgeld",
+    "buchungsDatum": "2021-02-20; 00:02:22"
   }
 ]

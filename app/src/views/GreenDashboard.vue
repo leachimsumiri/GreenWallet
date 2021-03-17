@@ -17,19 +17,19 @@
               <th scope="col">green index</th>
               <th scope="col">target name</th>
               <th scope="col">IBAN</th>
-              <th scope="col">amoun</th>
+              <th scope="col">amount (€)</th>
               <th scope="col">purpose</th>
-              <th scope="col">valid date</th>
+              <th scope="col">date</th>
             </tr>
             </thead>
             <tbody>
-              <tr v-for="transaction in transactions" :key="transaction.greenIndex">
+              <tr v-for="transaction in transactions" :key="transaction.buchungsDatum">
                 <th scope="row">{{transaction.greenIndex}}</th>
                 <td>{{transaction.targetName}}</td>
                 <td>{{transaction.IBAN}}</td>
                 <td>{{transaction.amount}}</td>
                 <td>{{transaction.purpose}}</td>
-                <td>{{transaction.buchungsdatum}}</td>
+                <td>{{transaction.buchungsDatum}}</td>
               </tr>
             </tbody>
           </table>
@@ -42,20 +42,35 @@ import * as axios from 'axios';
 import Chart from 'chart.js';
 
 const gettransactions = async function(returnobject){
-  const response = await axios.get('http://127.0.0.1:5000/getGreenTransactions');
+  const response = await axios.get('api/getGreenTransactions.json');
+  //const response = await axios.get('http://127.0.0.1:5000/getGreenTransactions');
   console.log(response);
-  //const response = await axios.get('api/getGreenTransactions.json');
-  const result = response.data.map(transaction => {
+
+  let result = response.data.map(transaction => {
     if (returnobject === "transaction"){
       return transaction
     }
     else {
       return transaction.greenIndex;
     }
-
   });
+
+  if(returnobject === "dataset"){
+    result = accumulateGreenIndizes(result);
+  }
+
   return result;
 };
+
+const accumulateGreenIndizes = function(arr) {
+  for(let i = 0; i < arr.length; i++){
+    if(i) {
+      arr[i] = arr[i] + arr[i-1];
+    }
+  }
+
+  return arr;
+}
 
 export default {
   data() {
@@ -109,7 +124,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
